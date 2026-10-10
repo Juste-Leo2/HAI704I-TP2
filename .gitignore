@@ -1,0 +1,6 @@
+rapport/
+*.class
+*.jar
+*.lst
+*.war
+**/target/
