@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Fichier adapté du projet date-demo (Bachar Rima)-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>fr.umontpellier.hai704i</groupId>
+  <artifactId>hotel-service</artifactId>
+  <version>1.0.0</version>
+  <name>hotel-service</name>
+  <description>Service SOAP de gestion d'un hôtel (service) et de ses clients (agence)</description>
+
+  <properties>
+    <maven.compiler.release>17</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <!-- Eclipse Metro : implementation de Jakarta XML Web Services 4.0.
+         Fournit l'API (jakarta.jws, jakarta.xml.ws), JAXB, et le serveur
+         HTTP leger utilise par Endpoint.publish. Depuis Java 11, rien de
+         tout cela n'est dans le JDK : c'est une dependance comme une autre. -->
+    <dependency>
+      <groupId>com.sun.xml.ws</groupId>
+      <artifactId>jaxws-rt</artifactId>
+      <version>4.0.5</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <!-- mvn exec:java  lance le serveur sans assembler de jar -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.5.0</version>
+        <configuration>
+          <mainClass>hai704i.hotel.Serveur</mainClass>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

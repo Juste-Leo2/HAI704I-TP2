@@ -12,9 +12,13 @@
 
 Pour le moment, ce TP est en cours de construction.
 
-Pour commencer, j'ai mis en place A0 pour setup l'environnement de travail. voir [tuto](tuto.md)
+## A0
 
-## A1 
+Pour commencer, j'ai mis en place A0 pour setup l'environnement de travail. voir [tuto](tuto.md)
+Résultat : voir ![A0](docs/A0.png)
+
+
+## A1
 
 Pour effectuer le travail, je me suis basé sur l'exemple complet service employé démo présent sur Moodle
 
@@ -97,6 +101,15 @@ employe-demo/
         EmployeEndpoint.java
     pom.xml                                         dépendance jaxws-rt
 ```
+
+Cette étape a permis de définir notre hôtel, les données qu'il peut recevoir ainsi que la publication du contrat sur le réseau :
+
+- Serveur : ouvre le port HTTP et publie le service SOAP via Endpoint.publish.
+- contrat/HotelPort : interface du contrat SOAP définissant l'opération de recherche exposée.
+- contrat/dto : objets de transfert décrivant les données qui voyagent sur le réseau (DemandeRecherche, OffreDTO).
+- endpoint (HotelEndpoint) : point d'accès qui implémente le contrat, traite les requêtes reçues et renvoie les réponses.
+
+Résultat : voir ![A1](docs/A1.png)
 
 ## 7. Licence
 
