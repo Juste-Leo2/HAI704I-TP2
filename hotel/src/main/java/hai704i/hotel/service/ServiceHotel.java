@@ -13,6 +13,7 @@ public class ServiceHotel
     private final String nomHotel;
     private final int etoiles;
     private final String ville;
+    private final List<String> agencesAutorisees;
 
     public ServiceHotel(HotelDepot depot, String nomHotel, int etoiles, String ville) 
     {
@@ -20,6 +21,11 @@ public class ServiceHotel
         this.nomHotel = nomHotel;
         this.etoiles = etoiles;
         this.ville = ville;
+
+        // Liste des agences partenaires (autorisées)
+        this.agencesAutorisees = new ArrayList<>();
+        this.agencesAutorisees.add("agence_lille");
+        this.agencesAutorisees.add("agence_paris");
     }
 
     // get
@@ -78,6 +84,21 @@ public class ServiceHotel
 
         return offres;
     }
+
+
+    public boolean estPartenaire(String idAgence)
+    {
+        for (int i = 0; i < agencesAutorisees.size(); i++) 
+        {
+            if (agencesAutorisees.get(i).equalsIgnoreCase(idAgence)) 
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
     /**
      * Calcule le nombre de jours entre deux dates au format JJ-MM-AAAA.

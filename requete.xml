@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-  <soapenv:Body>
-    <formaterDate xmlns="http://date.hai704i.umontpellier.fr/">
-      <format xmlns="">JMA</format>
-    </formaterDate>
-  </soapenv:Body>
-</soapenv:Envelope>

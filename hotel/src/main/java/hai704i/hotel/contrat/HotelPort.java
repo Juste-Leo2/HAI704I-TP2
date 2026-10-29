@@ -10,6 +10,7 @@ import jakarta.jws.WebResult;
 import jakarta.jws.WebService;
 import hai704i.hotel.contrat.dto.DemandeRecherche;
 import hai704i.hotel.contrat.dto.OffreDTO;
+import hai704i.hotel.contrat.faute.AgenceNonReconnue;
 
 
 /**
@@ -21,6 +22,7 @@ public interface HotelPort {
 
     @WebMethod
     @WebResult(name = "offre")
-    List<OffreDTO> rechercherOffres(@WebParam(name = "demande") DemandeRecherche demande);
+    List<OffreDTO> rechercherOffres(@WebParam(name = "demande") DemandeRecherche demande)
+        throws AgenceNonReconnue;
 
 }

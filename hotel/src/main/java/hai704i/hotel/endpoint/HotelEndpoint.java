@@ -10,6 +10,7 @@ import jakarta.jws.WebService;
 import hai704i.hotel.contrat.HotelPort;
 import hai704i.hotel.contrat.dto.DemandeRecherche;
 import hai704i.hotel.contrat.dto.OffreDTO;
+import hai704i.hotel.contrat.faute.AgenceNonReconnue;
 import hai704i.hotel.domaine.Offre;
 import hai704i.hotel.service.ServiceHotel;
 
@@ -47,8 +48,16 @@ public class HotelEndpoint implements HotelPort {
     }
 
     @Override
-    public List<OffreDTO> rechercherOffres(DemandeRecherche demande) 
+    public List<OffreDTO> rechercherOffres(DemandeRecherche demande) throws AgenceNonReconnue 
     {
+        if (!service.estPartenaire(demande.getIdentifiantAgence())) 
+        {
+            // on lève une erreur si l'agence n'est pas partenaire
+            throw new AgenceNonReconnue("L'agence '" + demande.getIdentifiantAgence() + "' n'est pas partenaire de cet hôtel.");
+        }
+
+
+
         List<OffreDTO> resultats = new ArrayList<>();
         List<Offre> offresMetier = service.rechercher(
             demande.getVille(),

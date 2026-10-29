@@ -124,6 +124,17 @@ Le contrat WSDL reste strictement identique à l'étape A1, prouvant l'indépend
 
 Résultat : voir ![A2](docs/A2.png)
 
+## A3
+
+Cette étape permet à l'hôtel de refuser explicitement une agence qui n'est pas partenaire, au lieu de renvoyer une liste vide trompeuse :
+
+- contrat/faute/AgenceNonReconnue : exception métier déclarée avec @WebFault qui apparaît directement dans le WSDL.
+- contrat/dto/DemandeRecherche : ajout de l'identifiant de l'agence pour savoir qui interroge l'hôtel.
+- service/ServiceHotel : liste des agences autorisées et méthode de vérification.
+- endpoint/HotelEndpoint : renvoie une faute SOAP 500 avec le détail précis de l'erreur si l'agence est inconnue.
+
+Résultat : voir ![A3](docs/A3.png)
+
 
 
 

@@ -11,6 +11,7 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DemandeRecherche {
 
+    private String identifiantAgence;
     private String ville;
     private String dateArrivee;
     private String dateDepart;
@@ -29,6 +30,9 @@ public class DemandeRecherche {
         this.etoilesMin = etoilesMin;
         this.prixMax = prixMax;
     }
+
+    public String getIdentifiantAgence() { return identifiantAgence; }
+    public void setIdentifiantAgence(String v) { this.identifiantAgence = v; }
 
     public String getVille() { return ville; }
     public void setVille(String v) { this.ville = v; }
