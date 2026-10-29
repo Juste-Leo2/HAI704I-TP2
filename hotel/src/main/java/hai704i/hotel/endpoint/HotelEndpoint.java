@@ -10,6 +10,8 @@ import jakarta.jws.WebService;
 import hai704i.hotel.contrat.HotelPort;
 import hai704i.hotel.contrat.dto.DemandeRecherche;
 import hai704i.hotel.contrat.dto.OffreDTO;
+import hai704i.hotel.domaine.Offre;
+import hai704i.hotel.service.ServiceHotel;
 
 
 /**
@@ -37,12 +39,37 @@ import hai704i.hotel.contrat.dto.OffreDTO;
             targetNamespace = "http://hotel.hai704i.umontpellier.fr/")
 public class HotelEndpoint implements HotelPort {
 
-    public HotelEndpoint() {}
+    private final ServiceHotel service;
+
+    public HotelEndpoint(ServiceHotel service) 
+    {
+        this.service = service;
+    }
 
     @Override
-    public List<OffreDTO> rechercherOffres(DemandeRecherche demande) {
+    public List<OffreDTO> rechercherOffres(DemandeRecherche demande) 
+    {
         List<OffreDTO> resultats = new ArrayList<>();
-        resultats.add(new OffreDTO("OFFRE 1", "Hôtel Montpellier", 3, "Chambre Standard", 120.0));
+        List<Offre> offresMetier = service.rechercher(
+            demande.getVille(),
+            demande.getDateArrivee(),
+            demande.getDateDepart(),
+            demande.getNombrePersonnes(),
+            demande.getEtoilesMin(),
+            demande.getPrixMax()
+        );
+
+        for (int i = 0; i < offresMetier.size(); i++) 
+        {
+            Offre o = offresMetier.get(i);
+            resultats.add(new OffreDTO(
+                o.identifiant(),
+                service.getNomHotel(),
+                service.getEtoiles(),
+                o.chambre().description(),
+                o.prixTotal()
+            ));
+        }
         return resultats;
     }
 

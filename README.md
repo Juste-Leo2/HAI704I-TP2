@@ -111,6 +111,22 @@ Cette étape a permis de définir notre hôtel, les données qu'il peut recevoir
 
 Résultat : voir ![A1](docs/A1.png)
 
+## A2
+
+Cette étape sépare explicitement les responsabilités de l'hôtel en 3 couches (Point d'accès, Service métier, Dépôt) :
+
+- domaine (Chambre, Offre) : modèle métier interne de l'hôtel (records Java purs, sans aucune annotation).
+- depot (HotelDepot, HotelDepotMemoire) : interface et implémentation en mémoire pour stocker et filtrer les chambres.
+- service (ServiceHotel) : règles métier (calcul des prix, durée du séjour selon les dates, vérification ville et étoiles), sans dépendance à JAX-WS.
+- endpoint (HotelEndpoint) : adaptateur qui reçoit la demande, appelle le service métier et traduit le résultat en DTO.
+
+Le contrat WSDL reste strictement identique à l'étape A1, prouvant l'indépendance entre le contrat public et la mise en œuvre interne.
+
+Résultat : voir ![A2](docs/A2.png)
+
+
+
+
 ## 7. Licence
 
 Ce projet est distribué sous licence **Apache 2.0**. Consultez le fichier [LICENSE](LICENSE) pour plus de détails.

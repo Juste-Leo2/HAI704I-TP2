@@ -2,7 +2,10 @@
 
 package hai704i.hotel;
 
+import hai704i.hotel.depot.HotelDepot;
+import hai704i.hotel.depot.HotelDepotMemoire;
 import hai704i.hotel.endpoint.HotelEndpoint;
+import hai704i.hotel.service.ServiceHotel;
 import jakarta.xml.ws.Endpoint;
 
 /**
@@ -15,7 +18,20 @@ public class Serveur {
 
     public static void main(String[] args) {
         String adresse = args.length > 0 ? args[0] : "http://localhost:8081/hotel";
-        Endpoint.publish(adresse, new HotelEndpoint());
+
+        ////////////////////////A2//////////////////////
+        // Dépôt en mémoire
+        HotelDepot depot = new HotelDepotMemoire();
+
+        // Service métier pur (sans SOAP)
+        ServiceHotel service = new ServiceHotel(depot, "Hôtel Belle Etoile", 3, "Montpellier");
+
+        // Point d'accès SOAP (adaptateur)
+        HotelEndpoint endpoint = new HotelEndpoint(service);
+        ///////////////////////////////////////////////
+
+
+        Endpoint.publish(adresse, endpoint);
         System.out.println("Service publie  : " + adresse);
         System.out.println("Contrat WSDL    : " + adresse + "?wsdl");
         System.out.println("Schema XSD      : " + adresse + "?xsd=1");
