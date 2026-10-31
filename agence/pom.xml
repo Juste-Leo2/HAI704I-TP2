@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Fichier adapté du projet date-demo (Bachar Rima) -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>fr.umontpellier.hai704i</groupId>
+  <artifactId>agence-client</artifactId>
+  <version>1.0.0</version>
+  <name>agence-client</name>
+  <description>Client Agence SOAP (HAI704I, TP 2) : artefacts engendrés par wsimport depuis le contrat WSDL de l'hôtel</description>
+
+  <properties>
+    <maven.compiler.release>17</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <!-- Pile client SOAP : Eclipse Metro fournit le runtime JAX-WS pour créer le proxy dynamique et envoyer les messages -->
+    <dependency>
+      <groupId>com.sun.xml.ws</groupId>
+      <artifactId>jaxws-rt</artifactId>
+      <version>4.0.5</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <!-- wsimport engendre dans target/generated-sources le proxy et les DTOs à partir de src/main/wsdl/hotel.wsdl -->
+      <plugin>
+        <groupId>com.sun.xml.ws</groupId>
+        <artifactId>jaxws-maven-plugin</artifactId>
+        <version>4.0.5</version>
+        <executions>
+          <execution>
+            <goals><goal>wsimport</goal></goals>
+            <configuration>
+              <wsdlDirectory>${project.basedir}/src/main/wsdl</wsdlDirectory>
+              <wsdlFiles><wsdlFile>hotel.wsdl</wsdlFile></wsdlFiles>
+              <packageName>hai704i.hotel.engendre</packageName>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Permet d'exécuter l'agence avec : mvn exec:java -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.5.0</version>
+        <configuration>
+          <mainClass>hai704i.agence.application.AgenceApplication</mainClass>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

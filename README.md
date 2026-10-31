@@ -136,6 +136,15 @@ Cette étape permet à l'hôtel de refuser explicitement une agence qui n'est pa
 Résultat : voir ![A3](docs/A3.png)
 
 
+## A4
+
+Cette étape crée le projet client agence qui interroge l'hôtel via SOAP :
+
+- Client indépendant : Le projet agence ne dépend d'aucun code du projet hotel. Maven utilise l'outil wsimport pour générer automatiquement le proxy et les classes de données à partir du contrat WSDL (pour cela nous avons repris les fichiers .wsdl et .xsd créés par le service hôtel pour les passer à l'agence).
+- Adresse de l'hôtel configurable en argument : L'URL du service n'est pas figée dans le code. On peut la passer directement au lancement avec `-Dexec.args="http://localhost:8081/hotel"` pour viser n'importe quel hôtel ou port.
+- Récupération des offres : L'agence envoie ses critères de recherche, contacte l'hôtel et affiche les offres reçues.
+
+Résultat : voir ![A4](docs/A4.png)
 
 
 ## 7. Licence
