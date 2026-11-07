@@ -2,7 +2,10 @@
 
 package hai704i.agence.application;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import jakarta.xml.ws.WebServiceException;
 
 import hai704i.hotel.engendre.CarteBancaireDTO;
 import hai704i.hotel.engendre.ClientDTO;
@@ -22,7 +25,10 @@ public class AgenceApplication
 
         System.out.println("Adresse de l'hotel : " + adresseHotel);
 
-        ClientHotel client = new ClientHotel(adresseHotel);
+        // Liste des adresses des hôtels partenaires
+        List<String> adressesHotels = new ArrayList<>();
+        adressesHotels.add(adresseHotel);
+        adressesHotels.add("http://localhost:8082/hotel");
 
         String idAgence = "agence_lille";
         String secretAgence = "secret_lille_123";
@@ -31,22 +37,64 @@ public class AgenceApplication
         String depart = "15-11-2026";
         int nbPersonnes = 2;
         int etoilesMin = 3;
-        double prixMax = 500.0;
+        double prixMax = 1000.0;
 
-        List<OffreDTO> offres = client.rechercher(idAgence, ville, arrivee, depart, nbPersonnes, etoilesMin, prixMax);
+        List<OffreDTO> toutesLesOffres = new ArrayList<>();
+        List<ClientHotel> clientsHotels = new ArrayList<>();
 
-        System.out.println("Nombre d'offres recues : " + offres.size());
+        System.out.println("- Recherche aupres des hotels partenaires");
 
-        for (int i = 0; i < offres.size(); i++) 
+        for (int h = 0; h < adressesHotels.size(); h++) 
         {
-            OffreDTO o = offres.get(i);
+            String adr = adressesHotels.get(h);
+            ClientHotel client = new ClientHotel(adr);
+
+            try 
+            {
+                List<OffreDTO> offresHotel = client.rechercher(idAgence, ville, arrivee, depart, nbPersonnes, etoilesMin, prixMax);
+                System.out.println("Reponse de " + adr + " : " + offresHotel.size() + " offre(s) trouvee(s)");
+
+                for (int i = 0; i < offresHotel.size(); i++) 
+                {
+                    toutesLesOffres.add(offresHotel.get(i));
+                    clientsHotels.add(client);
+                }
+            } 
+            catch (WebServiceException e) 
+            {
+                // Gestion de la defaillance partielle : l'hotel eteint ne fait pas planter l'agence
+                System.out.println("Avertissement : Hotel a l'adresse " + adr + " injoignable.");
+            }
+        }
+
+        // Tri des offres par prix croissant
+        toutesLesOffres.sort((o1, o2) -> Double.compare(o1.getPrixTotal(), o2.getPrixTotal()));
+
+        System.out.println("\nTotal des offres agregees et triees : " + toutesLesOffres.size());
+        for (int i = 0; i < toutesLesOffres.size(); i++) 
+        {
+            OffreDTO o = toutesLesOffres.get(i);
             System.out.println("Offre " + (i + 1) + " : " + o.getIdentifiant() + " - " + o.getNomHotel() + " (" + o.getNombreEtoiles() + " etoiles) - " + o.getDescriptionChambre() + " - " + o.getPrixTotal() + " EUROS");
         }
 
-        // Reservation de la premiere offre si disponible
-        if (offres.size() > 0) 
+        // Verification de la tarification personnalisee selon l'agence (Point de controle F)
+        if (clientsHotels.size() > 0 && toutesLesOffres.size() > 0) 
         {
-            OffreDTO choix = offres.get(0);
+            ClientHotel premierClient = clientsHotels.get(0);
+            List<OffreDTO> offresParis = premierClient.rechercher("agence_paris", ville, arrivee, depart, nbPersonnes, etoilesMin, prixMax);
+            if (offresParis.size() > 0) 
+            {
+                System.out.println("\n- Comparaison des tarifs selon l'agence partenaire :");
+                System.out.println("Chambre (" + offresParis.get(0).getDescriptionChambre() + ") pour agence_lille (-10%) : " + toutesLesOffres.get(0).getPrixTotal() + " EUROS");
+                System.out.println("Chambre (" + offresParis.get(0).getDescriptionChambre() + ") pour agence_paris (-20%) : " + offresParis.get(0).getPrixTotal() + " EUROS");
+            }
+        }
+
+        //////////////////////// A5 : Reservation, Idempotence, Securite ////////
+        if (toutesLesOffres.size() > 0) 
+        {
+            OffreDTO choix = toutesLesOffres.get(0);
+            ClientHotel clientCible = clientsHotels.get(0);
 
             ClientDTO voyageur = new ClientDTO();
             voyageur.setNom("Dupont");
@@ -68,13 +116,13 @@ public class AgenceApplication
             demande.setCarte(carte);
 
             System.out.println("\n- Test Reservation");
-            ConfirmationReservationDTO conf = client.reserver(demande);
+            ConfirmationReservationDTO conf = clientCible.reserver(demande);
             System.out.println("Reservation confirmee : Ref=" + conf.getReferenceReservation() + " | " + conf.getMessage() + " | Prix=" + conf.getPrixTotal() + " EUROS");
 
             // Test d'idempotence avec la meme demande
             System.out.println("\n- Test Idempotence");
-            ConfirmationReservationDTO rejeu = client.reserver(demande);
-            System.out.println("Reponse idempotence : Ref=" + rejeu.getReferenceReservation() );
+            ConfirmationReservationDTO rejeu = clientCible.reserver(demande);
+            System.out.println("Reponse idempotence : Ref=" + rejeu.getReferenceReservation());
 
             // Test avec un mauvais mot de passe
             System.out.println("\n- Test Refus Authentification");
@@ -83,7 +131,7 @@ public class AgenceApplication
 
             try 
             {
-                client.reserver(demande);
+                clientCible.reserver(demande);
             } 
             catch (Exception e) 
             {

@@ -175,6 +175,25 @@ Côté client (agence) :
 Résultat : voir ![A5](docs/A5.png)
 
 
+## A6
+
+Cette étape gère l'interrogation de plusieurs hôtels partenaires, l'application de tarifs négociés par agence, l'agrégation avec tri par prix, et la résilience aux défaillances partielles :
+
+Côté hôtel :
+- Support multi-instances : l'adresse de publication et le port peuvent être spécifiés au lancement de Serveur.java, permettant de déployer plusieurs hôtels distincts (ex: Hôtel Belle Étoile sur le port 8081 et Hôtel du Soleil sur le port 8082 avec des chambres et étoiles différentes).
+- Tarification négociée : le calcul du prix prend en compte le partenariat avec chaque agence en appliquant un pourcentage de remise spécifique selon l'identifiant de l'agence (ex: -10% pour agence_lille, -20% pour agence_paris).
+
+Côté client (agence) :
+- Interrogation multi-hôtels : l'agence contacte successivement sa liste d'hôtels partenaires configurés (adressesHotels).
+- Agrégation et tri : toutes les offres reçues sont regroupées dans une liste unique et triées par ordre de prix croissant.
+- Vérification de la tarification personnalisée : comparaison pour une même chambre entre agences partenaires (ex: agence_lille avec -10% vs agence_paris avec -20%).
+- Résilience aux pannes (défaillance partielle) : si l'un des hôtels partenaires est indisponible ou éteint, l'exception réseau (WebServiceException) est interceptée. L'agence affiche un avertissement d'une ligne et continue de fonctionner normalement avec les offres des autres hôtels disponibles.
+
+Résultats :
+- Tous les hôtels en ligne (4 offres agrégées et triées par prix) : voir ![A6 - Deux hôtels](docs/A6_1.png)
+- Un hôtel éteint (avertissement de panne sans crash, offre occupée exclue) : voir ![A6 - Hôtel injoignable](docs/A6_2.png)
+
+
 ## 7. Licence
 
 Ce projet est distribué sous licence **Apache 2.0**. Consultez le fichier [LICENSE](LICENSE) pour plus de détails.

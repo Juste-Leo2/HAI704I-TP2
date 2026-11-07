@@ -130,6 +130,12 @@ public class ServiceHotel
     public List<Offre> rechercher(String villeDemandee, String dateArrivee, String dateDepart, 
                                   int nbPersonnes, int etoilesMin, double prixMax) 
     {
+        return rechercher("agence_lille", villeDemandee, dateArrivee, dateDepart, nbPersonnes, etoilesMin, prixMax);
+    }
+
+    public List<Offre> rechercher(String idAgence, String villeDemandee, String dateArrivee, String dateDepart, 
+                                  int nbPersonnes, int etoilesMin, double prixMax) 
+    {
         List<Offre> offres = new ArrayList<>();
 
         if (!this.ville.equalsIgnoreCase(villeDemandee) || this.etoiles < etoilesMin) 
@@ -139,13 +145,24 @@ public class ServiceHotel
 
         int nbNuits = calculerNombreNuits(dateArrivee, dateDepart);
 
+        // Réduction négociée selon l'agence partenaire
+        double reduction = 1.0;
+        if ("agence_paris".equalsIgnoreCase(idAgence)) 
+        {
+            reduction = 0.80; // 20% de réduction
+        } 
+        else if ("agence_lille".equalsIgnoreCase(idAgence)) 
+        {
+            reduction = 0.90; // 10% de réduction
+        }
+
         // Recherche des chambres disponibles non réservées
         List<Chambre> disponibles = depot.chambresDisponibles(nbPersonnes);
 
         for (int i = 0; i < disponibles.size(); i++) 
         {
             Chambre ch = disponibles.get(i);
-            double prixTotal = ch.prixParNuit() * nbNuits;
+            double prixTotal = ch.prixParNuit() * nbNuits * reduction;
 
             if (prixMax <= 0 || prixTotal <= prixMax) 
             {

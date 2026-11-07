@@ -23,6 +23,15 @@ public class HotelDepotMemoire implements HotelDepot
         chambres.add(new Chambre("3", 2, 100.0, "Chambre Double Vue Mer"));
     }
 
+    // Constructeur avec liste de chambres
+    public HotelDepotMemoire(List<Chambre> chambresInitiales) 
+    {
+        for (int i = 0; i < chambresInitiales.size(); i++) 
+        {
+            chambres.add(chambresInitiales.get(i));
+        }
+    }
+
     @Override
     public List<Chambre> toutesLesChambres() 
     {

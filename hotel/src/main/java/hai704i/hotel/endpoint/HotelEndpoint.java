@@ -46,6 +46,7 @@ public class HotelEndpoint implements HotelPort
 
         List<OffreDTO> resultats = new ArrayList<>();
         List<Offre> offresMetier = service.rechercher(
+            demande.getIdentifiantAgence(),
             demande.getVille(),
             demande.getDateArrivee(),
             demande.getDateDepart(),

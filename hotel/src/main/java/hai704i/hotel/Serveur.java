@@ -30,6 +30,19 @@ public class Serveur {
         HotelEndpoint endpoint = new HotelEndpoint(service);
         ///////////////////////////////////////////////
 
+        ////////////////////////A6//////////////////////
+        if (adresse.contains("8082")) 
+        {
+            java.util.List<hai704i.hotel.domaine.Chambre> chambresSoleil = new java.util.ArrayList<>();
+            chambresSoleil.add(new hai704i.hotel.domaine.Chambre("10", 1, 70.0, "Chambre Simple Confort"));
+            chambresSoleil.add(new hai704i.hotel.domaine.Chambre("20", 2, 120.0, "Suite Junior"));
+            chambresSoleil.add(new hai704i.hotel.domaine.Chambre("30", 2, 150.0, "Suite Vue Panoramique"));
+            depot = new HotelDepotMemoire(chambresSoleil);
+            service = new ServiceHotel(depot, "Hôtel du Soleil", 4, "Montpellier");
+            endpoint = new HotelEndpoint(service);
+        }
+        ///////////////////////////////////////////////
+
 
         Endpoint.publish(adresse, endpoint);
         System.out.println("Service publie  : " + adresse);
