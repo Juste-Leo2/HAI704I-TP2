@@ -1,4 +1,4 @@
-// Fichier adapté du projet employe-demo (Bachar Rima)
+// Fichier inspiré du projet employe-demo (Bachar Rima)
 
 package hai704i.hotel.endpoint;
 
@@ -8,38 +8,27 @@ import java.util.List;
 import jakarta.jws.WebService;
 
 import hai704i.hotel.contrat.HotelPort;
+import hai704i.hotel.contrat.dto.ConfirmationReservationDTO;
 import hai704i.hotel.contrat.dto.DemandeRecherche;
+import hai704i.hotel.contrat.dto.DemandeReservation;
 import hai704i.hotel.contrat.dto.OffreDTO;
 import hai704i.hotel.contrat.faute.AgenceNonReconnue;
+import hai704i.hotel.contrat.faute.AuthentificationEchouee;
+import hai704i.hotel.contrat.faute.OffreIndisponible;
+import hai704i.hotel.contrat.faute.PaiementInvalide;
 import hai704i.hotel.domaine.Offre;
+import hai704i.hotel.domaine.Reservation;
 import hai704i.hotel.service.ServiceHotel;
-
 
 /**
  * Adaptateur entre le contrat SOAP et le métier.
- *
- * <p>Il fait trois choses :
- * (i) traduire les types du contrat vers le domaine, 
- * (ii) déléguer au service, 
- * (iii) puis traduire les refus métier en fautes déclarées.
- * 
- * C'est la raison d'être de cette couche.
- * Aucune règle de gestion, aucun accès aux données.
- *
- * <p>C'est la seule classe du serveur à jeter
- * le jour où l'on exposerait la même application en REST.
- * Le service, le domaine et les dépôts sont inchangés.
- *
- * <p>Cette classe porte {@code serviceName} et {@code portName} explicitement.
- * Sans eux, CXF les déduirait du nom de la classe d'implémentation, et
- * renommer {@code EmployeEndpoint} changerait le contrat publié.
  */
 @WebService(endpointInterface = "hai704i.hotel.contrat.HotelPort",
             serviceName = "HotelService",
             portName = "HotelSoapPort",
             targetNamespace = "http://hotel.hai704i.umontpellier.fr/")
-public class HotelEndpoint implements HotelPort {
-
+public class HotelEndpoint implements HotelPort 
+{
     private final ServiceHotel service;
 
     public HotelEndpoint(ServiceHotel service) 
@@ -52,11 +41,8 @@ public class HotelEndpoint implements HotelPort {
     {
         if (!service.estPartenaire(demande.getIdentifiantAgence())) 
         {
-            // on lève une erreur si l'agence n'est pas partenaire
             throw new AgenceNonReconnue("L'agence '" + demande.getIdentifiantAgence() + "' n'est pas partenaire de cet hôtel.");
         }
-
-
 
         List<OffreDTO> resultats = new ArrayList<>();
         List<Offre> offresMetier = service.rechercher(
@@ -82,4 +68,37 @@ public class HotelEndpoint implements HotelPort {
         return resultats;
     }
 
+    @Override
+    public ConfirmationReservationDTO reserver(DemandeReservation demande) 
+        throws AuthentificationEchouee, OffreIndisponible, PaiementInvalide 
+    {
+        String nomClient = demande.getClient() != null ? demande.getClient().getNom() : "";
+        String prenomClient = demande.getClient() != null ? demande.getClient().getPrenom() : "";
+
+        String numCarte = demande.getCarte() != null ? demande.getCarte().getNumeroCarte() : "";
+        int moisExp = demande.getCarte() != null ? demande.getCarte().getMoisExpiration() : 0;
+        int anneeExp = demande.getCarte() != null ? demande.getCarte().getAnneeExpiration() : 0;
+        String cvc = demande.getCarte() != null ? demande.getCarte().getCvc() : "";
+
+        Reservation res = service.reserver(
+            demande.getIdDemande(),
+            demande.getIdentifiantAgence(),
+            demande.getSecretAgence(),
+            demande.getIdOffre(),
+            nomClient,
+            prenomClient,
+            numCarte,
+            moisExp,
+            anneeExp,
+            cvc
+        );
+
+        return new ConfirmationReservationDTO(
+            res.reference(),
+            res.idDemande(),
+            service.getNomHotel(),
+            res.prixTotal(),
+            "Reservation confirmee pour " + res.nomClient() + " (Carte: " + res.carteMasquee() + ")"
+        );
+    }
 }

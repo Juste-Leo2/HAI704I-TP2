@@ -6,7 +6,9 @@ import java.util.List;
 
 import jakarta.xml.ws.BindingProvider;
 
+import hai704i.hotel.engendre.ConfirmationReservationDTO;
 import hai704i.hotel.engendre.DemandeRecherche;
+import hai704i.hotel.engendre.DemandeReservation;
 import hai704i.hotel.engendre.HotelPort;
 import hai704i.hotel.engendre.HotelService;
 import hai704i.hotel.engendre.OffreDTO;
@@ -53,5 +55,11 @@ public class ClientHotel
 
         HotelPort proxy = creerProxy();
         return proxy.rechercherOffres(demande);
+    }
+
+    public ConfirmationReservationDTO reserver(DemandeReservation demande) throws Exception 
+    {
+        HotelPort proxy = creerProxy();
+        return proxy.reserver(demande);
     }
 }

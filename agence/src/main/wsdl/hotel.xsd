@@ -2,9 +2,86 @@
 
 <xs:element name="AgenceNonReconnue" type="tns:AgenceNonReconnue"/>
 
+<xs:element name="AuthentificationEchouee" type="tns:AuthentificationEchouee"/>
+
+<xs:element name="OffreIndisponible" type="tns:OffreIndisponible"/>
+
+<xs:element name="PaiementInvalide" type="tns:PaiementInvalide"/>
+
 <xs:element name="rechercherOffres" type="tns:rechercherOffres"/>
 
 <xs:element name="rechercherOffresResponse" type="tns:rechercherOffresResponse"/>
+
+<xs:element name="reserver" type="tns:reserver"/>
+
+<xs:element name="reserverResponse" type="tns:reserverResponse"/>
+
+<xs:complexType name="reserver">
+<xs:sequence>
+<xs:element name="demande" type="tns:demandeReservation" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="demandeReservation">
+<xs:sequence>
+<xs:element name="carte" type="tns:carteBancaireDTO" minOccurs="0"/>
+<xs:element name="client" type="tns:clientDTO" minOccurs="0"/>
+<xs:element name="idDemande" type="xs:string" minOccurs="0"/>
+<xs:element name="idOffre" type="xs:string" minOccurs="0"/>
+<xs:element name="identifiantAgence" type="xs:string" minOccurs="0"/>
+<xs:element name="secretAgence" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="carteBancaireDTO">
+<xs:sequence>
+<xs:element name="anneeExpiration" type="xs:int"/>
+<xs:element name="cvc" type="xs:string" minOccurs="0"/>
+<xs:element name="moisExpiration" type="xs:int"/>
+<xs:element name="numeroCarte" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="clientDTO">
+<xs:sequence>
+<xs:element name="nom" type="xs:string" minOccurs="0"/>
+<xs:element name="prenom" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="reserverResponse">
+<xs:sequence>
+<xs:element name="confirmation" type="tns:confirmationReservationDTO" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="confirmationReservationDTO">
+<xs:sequence>
+<xs:element name="idDemande" type="xs:string" minOccurs="0"/>
+<xs:element name="message" type="xs:string" minOccurs="0"/>
+<xs:element name="nomHotel" type="xs:string" minOccurs="0"/>
+<xs:element name="prixTotal" type="xs:double"/>
+<xs:element name="referenceReservation" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="AuthentificationEchouee">
+<xs:sequence>
+<xs:element name="message" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="OffreIndisponible">
+<xs:sequence>
+<xs:element name="message" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="PaiementInvalide">
+<xs:sequence>
+<xs:element name="message" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
 
 <xs:complexType name="rechercherOffres">
 <xs:sequence>

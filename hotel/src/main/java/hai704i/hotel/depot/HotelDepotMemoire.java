@@ -6,10 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hai704i.hotel.domaine.Chambre;
+import hai704i.hotel.domaine.Offre;
+import hai704i.hotel.domaine.Reservation;
 
 public class HotelDepotMemoire implements HotelDepot 
 {
     private final List<Chambre> chambres = new ArrayList<>();
+    private final List<Reservation> reservations = new ArrayList<>();
+    private final List<Offre> offresGenerees = new ArrayList<>();
 
     public HotelDepotMemoire() 
     {
@@ -33,11 +37,79 @@ public class HotelDepotMemoire implements HotelDepot
         for (int i = 0; i < chambres.size(); i++) 
         {
             Chambre ch = chambres.get(i);
-            if (ch.peutAccueillir(nbPersonnes)) 
+            if (ch.peutAccueillir(nbPersonnes) && !estChambreReservee(ch.numero())) 
             {
                 resultats.add(ch);
             }
         }
         return resultats;
+    }
+
+    @Override
+    public void enregistrerReservation(Reservation reservation) 
+    {
+        reservations.add(reservation);
+    }
+
+    @Override
+    public Reservation trouverReservationParDemandeId(String idDemande) 
+    {
+        if (idDemande == null) 
+        {
+            return null;
+        }
+
+        for (int i = 0; i < reservations.size(); i++) 
+        {
+            Reservation r = reservations.get(i);
+            if (idDemande.equals(r.idDemande())) 
+            {
+                return r;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean estChambreReservee(String numeroChambre) 
+    {
+        for (int i = 0; i < reservations.size(); i++) 
+        {
+            Reservation r = reservations.get(i);
+            // Si la référence de l'offre contient le numéro de la chambre
+            if (r.idOffre() != null && r.idOffre().contains(numeroChambre)) 
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void enregistrerOffres(List<Offre> offres) 
+    {
+        for (int i = 0; i < offres.size(); i++) 
+        {
+            offresGenerees.add(offres.get(i));
+        }
+    }
+
+    @Override
+    public Offre trouverOffre(String idOffre) 
+    {
+        if (idOffre == null) 
+        {
+            return null;
+        }
+
+        for (int i = 0; i < offresGenerees.size(); i++) 
+        {
+            Offre o = offresGenerees.get(i);
+            if (idOffre.equals(o.identifiant())) 
+            {
+                return o;
+            }
+        }
+        return null;
     }
 }

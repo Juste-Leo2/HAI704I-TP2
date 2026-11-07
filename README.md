@@ -147,6 +147,34 @@ Cette étape crée le projet client agence qui interroge l'hôtel via SOAP :
 Résultat : voir ![A4](docs/A4.png)
 
 
+## A5
+
+Cette étape ajoute l'opération de réservation (écriture) avec authentification, gestion du rejeu et protection des données sensibles :
+
+Côté hôtel :
+- Ajout de l'opération de réservation dans le contrat, regroupant les informations du voyageur et des coordonnées bancaires fictives.
+- Authentification de l'agence par mot de passe (vérifié via une empreinte salée côté hôtel) avec refus explicite si le mot de passe est incorrect.
+- Gestion du rejeu (idempotence) : si une demande avec le même identifiant est renvoyée, l'hôtel renvoie la réservation existante sans créer de doublon.
+- Protection des données sensibles : aucun CVC n'est stocké en mémoire et le numéro de carte bancaire est masqué (ex: `**** 3456`). Le prix confirmé correspond exactement au prix annoncé.
+
+Mise à jour du contrat pour l'agence :
+Comme le contrat de l'hôtel a été modifié, nous avons mis à jour les fichiers WSDL et XSD locaux de l'agence :
+```powershell
+curl.exe -s "http://localhost:8081/hotel?wsdl" -o "agence/src/main/wsdl/hotel.wsdl"
+curl.exe -s "http://localhost:8081/hotel?xsd=1" -o "agence/src/main/wsdl/hotel.xsd"
+```
+- Note : curl.exe pour windows, curl pour linux
+
+Puis relancé `mvn compile` dans le dossier agence pour que wsimport engendre les nouvelles classes.
+
+Côté client (agence) :
+- Réservation de la première offre trouvée avec des coordonnées bancaires fictives et le secret de l'agence.
+- Test d'idempotence : renvoi immédiat de la même demande pour vérifier qu'aucune seconde réservation n'est créée.
+- Test de sécurité : tentative de réservation avec un mot de passe erroné pour vérifier la réception du refus envoyé par l'hôtel.
+
+Résultat : voir ![A5](docs/A5.png)
+
+
 ## 7. Licence
 
 Ce projet est distribué sous licence **Apache 2.0**. Consultez le fichier [LICENSE](LICENSE) pour plus de détails.

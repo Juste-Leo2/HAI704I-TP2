@@ -4,6 +4,21 @@
 <xsd:import namespace="http://hotel.hai704i.umontpellier.fr/" schemaLocation="hotel.xsd"/>
 </xsd:schema>
 </types>
+<message name="reserver">
+<part name="parameters" element="tns:reserver"/>
+</message>
+<message name="reserverResponse">
+<part name="parameters" element="tns:reserverResponse"/>
+</message>
+<message name="AuthentificationEchouee">
+<part name="fault" element="tns:AuthentificationEchouee"/>
+</message>
+<message name="OffreIndisponible">
+<part name="fault" element="tns:OffreIndisponible"/>
+</message>
+<message name="PaiementInvalide">
+<part name="fault" element="tns:PaiementInvalide"/>
+</message>
 <message name="rechercherOffres">
 <part name="parameters" element="tns:rechercherOffres"/>
 </message>
@@ -14,6 +29,13 @@
 <part name="fault" element="tns:AgenceNonReconnue"/>
 </message>
 <portType name="HotelPort">
+<operation name="reserver">
+<input wsam:Action="http://hotel.hai704i.umontpellier.fr/HotelPort/reserverRequest" message="tns:reserver"/>
+<output wsam:Action="http://hotel.hai704i.umontpellier.fr/HotelPort/reserverResponse" message="tns:reserverResponse"/>
+<fault message="tns:AuthentificationEchouee" name="AuthentificationEchouee" wsam:Action="http://hotel.hai704i.umontpellier.fr/HotelPort/reserver/Fault/AuthentificationEchouee"/>
+<fault message="tns:OffreIndisponible" name="OffreIndisponible" wsam:Action="http://hotel.hai704i.umontpellier.fr/HotelPort/reserver/Fault/OffreIndisponible"/>
+<fault message="tns:PaiementInvalide" name="PaiementInvalide" wsam:Action="http://hotel.hai704i.umontpellier.fr/HotelPort/reserver/Fault/PaiementInvalide"/>
+</operation>
 <operation name="rechercherOffres">
 <input wsam:Action="http://hotel.hai704i.umontpellier.fr/HotelPort/rechercherOffresRequest" message="tns:rechercherOffres"/>
 <output wsam:Action="http://hotel.hai704i.umontpellier.fr/HotelPort/rechercherOffresResponse" message="tns:rechercherOffresResponse"/>
@@ -22,6 +44,24 @@
 </portType>
 <binding name="HotelSoapPortBinding" type="tns:HotelPort">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+<operation name="reserver">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="AuthentificationEchouee">
+<soap:fault name="AuthentificationEchouee" use="literal"/>
+</fault>
+<fault name="OffreIndisponible">
+<soap:fault name="OffreIndisponible" use="literal"/>
+</fault>
+<fault name="PaiementInvalide">
+<soap:fault name="PaiementInvalide" use="literal"/>
+</fault>
+</operation>
 <operation name="rechercherOffres">
 <soap:operation soapAction=""/>
 <input>
