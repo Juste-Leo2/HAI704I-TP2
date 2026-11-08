@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+  <S:Body>
+    <ns2:rechercherOffresResponse xmlns:ns2="http://hotel.hai704i.umontpellier.fr/">
+      <offre>
+        <identifiant>OFFRE-2</identifiant>
+        <nomHotel>Hôtel Belle Etoile</nomHotel>
+        <nombreEtoiles>3</nombreEtoiles>
+        <descriptionChambre>Chambre Double Standard</descriptionChambre>
+        <prixTotal>360.0</prixTotal>
+      </offre>
+      <offre>
+        <identifiant>OFFRE-3</identifiant>
+        <nomHotel>Hôtel Belle Etoile</nomHotel>
+        <nombreEtoiles>3</nombreEtoiles>
+        <descriptionChambre>Chambre Double Vue Mer</descriptionChambre>
+        <prixTotal>450.0</prixTotal>
+      </offre>
+    </ns2:rechercherOffresResponse>
+  </S:Body>
+</S:Envelope>

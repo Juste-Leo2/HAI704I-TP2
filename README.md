@@ -194,6 +194,24 @@ Résultats :
 - Un hôtel éteint (avertissement de panne sans crash, offre occupée exclue) : voir ![A6 - Hôtel injoignable](docs/A6_2.png)
 
 
+## A7
+
+Cette étape permet de vérifier ce qui transite réellement sur le réseau ("sur le fil") à l'aide de requêtes XML manuelles envoyées avec curl.exe (fichiers stockés dans le dossier `captures/`) :
+
+- captures/requete-recherche-A7.xml et captures/reponse-recherche-A7.xml : requête de recherche envoyée à l'hôtel et sa réponse contenant la liste des offres en XML (HTTP 200).
+- captures/requete-reservation-A7.xml et captures/reponse-reservation-A7.xml : requête de réservation avec voyageur et carte bancaire, et sa confirmation avec le numéro de référence (HTTP 200).
+- captures/requete-refus-A7.xml et captures/reponse-refus-A7.xml : requête de réservation avec un mot de passe d'agence incorrect, provoquant un refus explicite sous la forme d'une faute SOAP structurée (HTTP 500 et balise `<S:Fault>`).
+
+Ces captures permettent de vérifier les éléments du contrat :
+- Version SOAP : SOAP 1.1, identifiée par l'espace de noms `http://schemas.xmlsoap.org/soap/envelope/` et l'élément racine `<S:Envelope>`.
+- Suivi d'une valeur (prixTotal) : déclarée en double dans OffreDTO (Java hôtel), traduite en `xs:double` dans le schéma XSD, transmise en texte dans la balise `<prixTotal>` sur le réseau, puis convertie en double dans la classe générée côté agence.
+- Indépendance des classes : l'agence ne partage aucune classe avec l'hôtel, elle instancie ses propres objets à partir du flux XML reçu.
+- Sécurité sur le fil : le CVC n'est jamais renvoyé et le numéro de carte bancaire est masqué dans la réponse.
+- Note sur l'encodage sous Windows : Windows PowerShell 5.1 interprète et redirige par défaut les flux sans BOM en Windows-1252 (ce qui altère les accents UTF-8 comme dans "Hôtel"). L'utilisation de PowerShell 7+ (`pwsh`) résout ce problème en adoptant UTF-8 comme encodage natif par défaut.
+
+Résultat : voir ![A7](docs/A7.png)
+
+
 ## 7. Licence
 
 Ce projet est distribué sous licence **Apache 2.0**. Consultez le fichier [LICENSE](LICENSE) pour plus de détails.

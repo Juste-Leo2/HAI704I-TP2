@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+  <S:Body>
+    <ns2:reserverResponse xmlns:ns2="http://hotel.hai704i.umontpellier.fr/">
+      <confirmation>
+        <idDemande>DEMANDE-A7-001</idDemande>
+        <message>Reservation confirmee pour Pierre Dupont (Carte: **** 3456)</message>
+        <nomHotel>Hôtel Belle Etoile</nomHotel>
+        <prixTotal>450.0</prixTotal>
+        <referenceReservation>RES-539270</referenceReservation>
+      </confirmation>
+    </ns2:reserverResponse>
+  </S:Body>
+</S:Envelope>

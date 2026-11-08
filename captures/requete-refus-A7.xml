@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:hot="http://hotel.hai704i.umontpellier.fr/">
+  <soapenv:Body>
+    <hot:reserver>
+      <demande>
+        <carte>
+          <anneeExpiration>2027</anneeExpiration>
+          <cvc>123</cvc>
+          <moisExpiration>12</moisExpiration>
+          <numeroCarte>1234567890123456</numeroCarte>
+        </carte>
+        <client>
+          <nom>Dupont</nom>
+          <prenom>Pierre</prenom>
+        </client>
+        <idDemande>DEMANDE-A7-BAD</idDemande>
+        <idOffre>OFFRE-2</idOffre>
+        <identifiantAgence>agence_lille</identifiantAgence>
+        <secretAgence>mauvais_secret_errone</secretAgence>
+      </demande>
+    </hot:reserver>
+  </soapenv:Body>
+</soapenv:Envelope>
+
