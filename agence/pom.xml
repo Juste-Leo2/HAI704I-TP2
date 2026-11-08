@@ -44,13 +44,15 @@
         </executions>
       </plugin>
 
-      <!-- Permet d'exécuter l'agence avec : mvn exec:java -->
+      <!-- Lancement de la console CLI (A8) : mvn exec:java -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.5.0</version>
         <configuration>
-          <mainClass>hai704i.agence.application.AgenceApplication</mainClass>
+          <!-- Pour réexécuter le scénario de test automatique (A4 à A7), remplacer la ligne ci-dessous par : hai704i.agence.application.AgenceApplication -->
+          <!-- Ou lancer en ligne de commande : mvn exec:java -Dexec.mainClass="hai704i.agence.application.AgenceApplication" -->
+          <mainClass>hai704i.agence.cli.ConsoleAgence</mainClass>
         </configuration>
       </plugin>
     </plugins>

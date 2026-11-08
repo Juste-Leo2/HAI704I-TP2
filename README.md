@@ -212,6 +212,18 @@ Ces captures permettent de vérifier les éléments du contrat :
 Résultat : voir ![A7](docs/A7.png)
 
 
+## A8
+
+Cette étape dote l'agence d'une interface en ligne de commande interactive (CLI) respectant la stricte séparation en couches :
+
+- ConsoleAgence (couche CLI) : interface interactive sans aucun import SOAP (`jakarta.xml.ws` ou `hai704i.hotel.engendre`), proposant un menu épuré (chercher, réserver, quitter) avec saisie de valeurs par défaut.
+- LogiqueAgence (couche logique d'agence) : seule classe connaissant SOAP, interrogeant les différents hôtels partenaires, agrégeant et triant les offres par prix, et capturant les fautes du contrat.
+- OffreVue et ResultatReservation (modèle client) : records Java purs encapsulant les données pour l'affichage sans faire fuiter d'exception SOAP vers la console.
+- Sécurité : le numéro de carte bancaire est masqué dans la confirmation (`**** 3456`) et le code CVC n'est jamais réaffiché ni conservé.
+
+Résultat : voir ![A8](docs/A8.png)
+
+
 ## 7. Licence
 
 Ce projet est distribué sous licence **Apache 2.0**. Consultez le fichier [LICENSE](LICENSE) pour plus de détails.
