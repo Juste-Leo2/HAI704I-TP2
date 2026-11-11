@@ -224,6 +224,24 @@ Cette étape dote l'agence d'une interface en ligne de commande interactive (CLI
 Résultat : voir ![A8](docs/A8.png)
 
 
+## Partie D (Bonus) : Interface Graphique Swing
+
+Dans la continuité du TP1, une interface graphique Swing (SwingUI) a été développée en complément du CLI :
+
+- Réutilisation de l'architecture : l'interface réutilise directement la couche LogiqueAgence sans aucun import SOAP, en respectant la séparation en couches.
+- Formulaire de recherche : champs préremplis pour faciliter les tests (ville, dates d'arrivée et de départ, personnes, étoiles, budget max).
+- Tableau des résultats : affichage des offres triées par prix croissant dans une JTable épurée avec les informations du séjour.
+- Dialogue de réservation : formulaire de saisie du voyageur et du paiement par carte bancaire.
+- Asynchronisme : utilisation de SwingWorker pour exécuter les appels réseau en tâche de fond et éviter le blocage de l'interface graphique.
+
+Commande pour lancer l'interface :
+```powershell
+mvn exec:java "-Dexec.mainClass=hai704i.agence.gui.SwingUI"
+```
+
+Résultat : voir ![Partie D](docs/D.png)
+
+
 ## 7. Licence
 
 Ce projet est distribué sous licence **Apache 2.0**. Consultez le fichier [LICENSE](LICENSE) pour plus de détails.

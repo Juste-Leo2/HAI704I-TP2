@@ -14,6 +14,7 @@
   <properties>
     <maven.compiler.release>17</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <exec.mainClass>hai704i.agence.cli.ConsoleAgence</exec.mainClass>
   </properties>
 
   <dependencies>
@@ -52,7 +53,8 @@
         <configuration>
           <!-- Pour réexécuter le scénario de test automatique (A4 à A7), remplacer la ligne ci-dessous par : hai704i.agence.application.AgenceApplication -->
           <!-- Ou lancer en ligne de commande : mvn exec:java -Dexec.mainClass="hai704i.agence.application.AgenceApplication" -->
-          <mainClass>hai704i.agence.cli.ConsoleAgence</mainClass>
+          <!-- Pour lancer l'interface graphique Swing (Partie D - Bonus) : mvn exec:java -Dexec.mainClass="hai704i.agence.gui.SwingUI" -->
+          <mainClass>${exec.mainClass}</mainClass>
         </configuration>
       </plugin>
     </plugins>
