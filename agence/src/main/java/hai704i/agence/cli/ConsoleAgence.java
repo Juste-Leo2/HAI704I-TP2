@@ -38,7 +38,7 @@ public class ConsoleAgence
         while (true) 
         {
             System.out.println();
-            System.out.println("1) chercher\n2) réserver\n3) quitter");
+            System.out.println("1: chercher\n2: réserver\n3: quitter");
             System.out.print("> ");
 
             String choix = entree.hasNextLine() ? entree.nextLine().trim() : "3";
