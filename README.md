@@ -63,6 +63,9 @@ curl --version      # Linux / macOS / CMD
 curl.exe --version  # Windows PowerShell
 ```
 
+### 2.4. Environnement de Développement
+- **IDE utilisé :** [Antigravity IDE](https://antigravity.google/product/antigravity-ide/)
+
 > **Note importante pour Windows PowerShell :**  
 > - **Windows PowerShell 5.1 (par défaut sous Windows) :** La commande `curl` est un alias natif vers l'applet `Invoke-WebRequest`. Pour appeler le véritable utilitaire cURL, il faut impérativement taper **`curl.exe`**. De plus, les redirections de flux y sont par défaut en Windows-1252 (ce qui altère les accents UTF-8).  
 > - **PowerShell 7+ (`pwsh`) :** Cet alias a été retiré, la commande standard **`curl`** appelle directement le bon binaire et l'encodage **UTF-8 natif** est supporté par défaut (recommandé pour préserver les caractères accentués).  
@@ -162,6 +165,21 @@ mvn clean compile
 ---
 
 ## 5. Démarrage et Exécution
+
+### 5.1. Jeu de Données de Démonstration (Fictif)
+Pour faciliter les tests lors de l'évaluation, l'ensemble des formulaires et saisies (CLI et GUI Swing) est pré-rempli avec des valeurs par défaut valides : il suffit d'appuyer sur la touche [Entrée] à chaque champ pour dérouler un scénario nominal complet.
+
+- Ville couverte : `Montpellier` (dates par défaut : du `01-12-2026` au `06-12-2026`).
+- Hôtels configurés :
+  - Hôtel 1 (Port 8081) : *Hôtel Belle Étoile* (3 étoiles) : Chambre simple 101 (80 €/nuit), Chambre double 102 (120 €/nuit), Suite 103 (200 €/nuit).
+  - Hôtel 2 (Port 8082) : *Hôtel du Soleil* (4 étoiles) : Chambre double confort 201 (140 €/nuit), Suite vue mer 202 (250 €/nuit).
+- Agences partenaires et secrets :
+  - `agence_lille` : secret `secret_lille_123` (remise négociée de 10%).
+  - `agence_paris` : secret `secret_paris_456` (remise négociée de 20%).
+  - Configuration : Le secret et l'identifiant se configurent en argument de lancement de la CLI (`mvn exec:java -Dexec.args="agence_lille secret_lille_123"`), ou par défaut dans `ConsoleAgence.java`.
+- Coordonnées bancaires de test : Numéro `1234567890123456`, expiration `12/2027`, CVC `123`.
+
+### 5.2. Lancement des Processus
 
 Lancer les processus dans l'ordre suivant dans des terminaux distincts :
 
