@@ -43,6 +43,11 @@ public class LogiqueAgence
         adressesHotels.add("http://localhost:8082/hotel");
     }
 
+    public String getIdAgence() 
+    {
+        return idAgence;
+    }
+
     public void ajouterHotel(String adresse) 
     {
         if (!adressesHotels.contains(adresse)) 

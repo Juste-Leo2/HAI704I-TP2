@@ -315,7 +315,9 @@ public class SwingUI extends JFrame
     public static void main(String[] args) 
     {
         SwingUtilities.invokeLater(() -> {
-            LogiqueAgence service = new LogiqueAgence();
+            String id = args.length > 0 ? args[0] : "agence_lille";
+            String secret = args.length > 1 ? args[1] : "secret_lille_123";
+            LogiqueAgence service = new LogiqueAgence(id, secret);
             SwingUI ui = new SwingUI(service);
             ui.setVisible(true);
         });
