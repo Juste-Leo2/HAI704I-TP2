@@ -1,3 +1,7 @@
+> [!WARNING]
+> This is a student project. The code is not intended for production use.
+> It is provided under the Apache 2.0 license. The documentation is in French.
+
 # HAI704I - TP 2 : Services Web SOAP (Système de Réservation d'Hôtels Distribué)
 
 **Université de Montpellier** - Master 1 Informatique (Parcours ICO)  
